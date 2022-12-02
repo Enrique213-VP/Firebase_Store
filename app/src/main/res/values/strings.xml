@@ -1,3 +1,6 @@
 <resources>
-    <string name="app_name">FirebaseAuth</string>
+    <string name="app_name">Courses</string>
+    <string name="title_page_login">Benvenuto, iniziamo questo progetto!</string>
+    <string name="ho_letto_e_accettato_i_termini_e_le_condizioni">Ho letto e accettato i <b><u>termini e le condizioni</u></b></string>
+    <string name="please_wait">Please Wait&#8230;</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.firebaseauth
+package com.firebaseauth.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -29,7 +29,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
                         if (task.isSuccessful) {
                             Toast.makeText(
                                 this@ForgotPasswordActivity,
-                                "Email sent succesfully to reset your password",
+                                "Email sent successfully to reset your password, please, you must check your email address",
                                 Toast.LENGTH_LONG
                             ).show()
                             finish()

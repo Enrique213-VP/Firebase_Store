@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.firebaseauth.databinding.ActivityMainBinding
+import com.firebaseauth.ui.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             //Logout from app
             FirebaseAuth.getInstance().signOut()
 
-            startActivity(Intent(this@MainActivity,LoginActivity::class.java))
+            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
             finish()
         }
     }
