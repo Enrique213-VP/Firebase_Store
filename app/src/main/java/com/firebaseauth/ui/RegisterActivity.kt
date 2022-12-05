@@ -10,6 +10,8 @@ import com.firebaseauth.MainActivity
 import com.firebaseauth.R
 import com.firebaseauth.core.BaseActivity
 import com.firebaseauth.databinding.ActivityRegisterBinding
+import com.firebaseauth.firestore.FireStoreClass
+import com.firebaseauth.models.User
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -105,7 +107,7 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
-    private fun registerUser(){
+    private fun registerUser() {
 
         showProgressDialog(resources.getString(R.string.please_wait))
 
@@ -118,19 +120,20 @@ class RegisterActivity : BaseActivity() {
             .addOnCompleteListener(
                 OnCompleteListener<AuthResult> { task ->
 
-                    hideProgressDialog()
-
                     // If the registration is successfully done
                     if (task.isSuccessful) {
 
                         //Firebase registered user
                         val firebaseUser: FirebaseUser = task.result!!.user!!
 
-                        Toast.makeText(
-                            this@RegisterActivity,
-                            "You are registered successfully",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        val user = User(
+                            firebaseUser.uid,
+                            binding.FirstName.text.toString().trim { it <= ' ' },
+                            binding.LastName.text.toString().trim { it <= ' ' },
+                            binding.registerEmail.text.toString().trim { it <= ' ' }
+                        )
+
+                        FireStoreClass().registerUser(this@RegisterActivity, user)
 
                         /*
                         * Here the new user registered is automatically signed-in and send
@@ -147,6 +150,9 @@ class RegisterActivity : BaseActivity() {
                         finish()
 
                     } else {
+
+                        hideProgressDialog()
+
                         //If the register is generated a mistake
                         Toast.makeText(
                             this@RegisterActivity,
@@ -157,5 +163,16 @@ class RegisterActivity : BaseActivity() {
 
                 }
             )
+    }
+
+    fun userRegistrationSuccess() {
+
+        hideProgressDialog()
+
+        Toast.makeText(
+            this@RegisterActivity,
+            "You are registered successfully",
+            Toast.LENGTH_LONG
+        ).show()
     }
 }
