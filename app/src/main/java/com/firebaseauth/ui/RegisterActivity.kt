@@ -135,20 +135,6 @@ class RegisterActivity : BaseActivity() {
 
                         FireStoreClass().registerUser(this@RegisterActivity, user)
 
-                        /*
-                        * Here the new user registered is automatically signed-in and send
-                        * him to main screen with user id and email
-                        * */
-
-                        val intent =
-                            Intent(this@RegisterActivity, MainActivity::class.java)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        intent.putExtra("userId", firebaseUser.uid)
-                        intent.putExtra("emailId", email)
-                        startActivity(intent)
-                        finish()
-
                     } else {
 
                         hideProgressDialog()

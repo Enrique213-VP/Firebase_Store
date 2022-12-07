@@ -1,8 +1,14 @@
 package com.firebaseauth.firestore
 
+import android.app.Activity
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
+import com.firebaseauth.core.Constants
 import com.firebaseauth.models.User
+import com.firebaseauth.ui.LoginActivity
 import com.firebaseauth.ui.RegisterActivity
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 
@@ -13,10 +19,10 @@ class FireStoreClass {
     fun registerUser(activity: RegisterActivity, userInfo: User) {
 
         // The "users" is collection name.
-        mFireStore.collection("users")
-        // Document ID for users fields.
+        mFireStore.collection(Constants.USERS)
+            // Document ID for users fields.
             .document(userInfo.id)
-        // Here the userInfo are field and the SetOption is set to merge.
+            // Here the userInfo are field and the SetOption is set to merge.
             .set(userInfo, SetOptions.merge())
             .addOnSuccessListener {
 
@@ -34,5 +40,83 @@ class FireStoreClass {
 
             }
 
+    }
+
+    fun getCurrentUserID(): String {
+        //An instance of currentUser if it is not null or else it will be blank.
+        val currentUser = FirebaseAuth.getInstance().currentUser
+
+        // A variable to assign the currentUserId if it is not null or else it will be blank.
+        var currentUserID = ""
+        if(currentUser != null) {
+            currentUserID = currentUser.uid
+        }
+
+        return currentUserID
+    }
+
+    fun getUserDetails(activity: Activity) {
+
+        // Here we pass the collection name from which we wants the data.
+        mFireStore.collection(Constants.USERS)
+        // The document id to get the fields of user.
+            .document(getCurrentUserID())
+            .get()
+            .addOnSuccessListener { document ->
+
+                Log.i(activity.javaClass.simpleName, document.toString())
+
+                // Here we have received the document snapshot which is converted into
+                // the user data model object
+                val user = document.toObject(User::class.java)!!
+
+                val sharedPreferences =
+                    activity.getSharedPreferences(
+                        Constants.My_Shopp_Preferences,
+                        Context.MODE_PRIVATE
+                    )
+
+                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                // Key: Value = LoggedInUsername : Sergio Vargas
+                editor.putString(
+                    Constants.LoggedInUsername,
+                    "${user.firstname} ${user.lastname}"
+                )
+
+                // Key for email: Email user ( For the moment)
+                editor.putString(
+                    Constants.LoggedInUsernameT,
+                    "${user.email}"
+                )
+                editor.apply()
+
+
+
+                //Start
+                when (activity) {
+                    is LoginActivity -> {
+
+                        // Call a function of base activity for transferring the result to it.
+                        activity.userLoggedInSuccess(user)
+
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+
+                // Hide the progress dialog if there is any error and print the error in log.
+                when(activity) {
+                    is LoginActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
+
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while getting user details",
+                    e
+                )
+
+            }
     }
 }

@@ -1,8 +1,10 @@
 package com.firebaseauth
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.firebaseauth.core.Constants
 import com.firebaseauth.databinding.ActivityMainBinding
 import com.firebaseauth.ui.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -14,11 +16,17 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val userId = intent.getStringExtra("userId")
-        val emailId = intent.getStringExtra("emailId")
+        val sharedPreferences =
+            getSharedPreferences(Constants.My_Shopp_Preferences, Context.MODE_PRIVATE)
 
-        binding.tvUserId.text = "User ID: $userId"
-        binding.tvUserEmail.text = "Email user: $emailId"
+        val username = sharedPreferences.getString(Constants.LoggedInUsername, "")!!
+
+        //Email user ( For the moment)
+        val email = sharedPreferences.getString(Constants.LoggedInUsernameT, "")!!
+
+
+        binding.tvUserId.text = "User is $username"
+        binding.tvUserEmail.text = "Email is $email"
 
         binding.buttonLogout.setOnClickListener{
             //Logout from app

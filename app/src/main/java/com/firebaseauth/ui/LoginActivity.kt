@@ -4,12 +4,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.firebaseauth.MainActivity
 import com.firebaseauth.R
 import com.firebaseauth.core.BaseActivity
 import com.firebaseauth.databinding.ActivityLoginBinding
+import com.firebaseauth.firestore.FireStoreClass
+import com.firebaseauth.models.User
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
@@ -26,6 +29,21 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         binding.buttonLogin.setOnClickListener(this)
         // Click event assigned to forgot password button.
         binding.tvForgotPassword.setOnClickListener(this)
+    }
+
+    fun userLoggedInSuccess(user: User) {
+
+        // Hide the progress dialog.
+        hideProgressDialog()
+
+        // Print the user details in the log as of now.
+        Log.i("First name", user.firstname)
+        Log.i("Last name", user.lastname)
+        Log.i("Email", user.email)
+
+        // Redirect the user to main screen after log in.
+        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        finish()
     }
 
     // In login screen the clickable components are login button, forgot password text and register text
@@ -81,13 +99,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         val email: String = binding.inputEmail.text.toString().trim() { it <= ' ' }
         val password: String = binding.inputPassword.text.toString().trim() { it <= ' ' }
 
-        //Log-in using firebase
 
+        //Log-in using firebase
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-
-                //hide the progressBar
-                hideProgressDialog()
 
                 if (task.isSuccessful) {
                     Toast.makeText(
@@ -96,19 +111,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    val intent =
-                        Intent(this@LoginActivity, MainActivity::class.java)
-                    intent.flags =
-                        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    intent.putExtra(
-                        "userId",
-                        FirebaseAuth.getInstance().currentUser!!.uid
-                    )
-                    intent.putExtra("emailId", email)
-                    startActivity(intent)
-                    finish()
+                    FireStoreClass().getUserDetails(this@LoginActivity)
+
                 } else {
 
+                    hideProgressDialog()
                     //If the register is generated a mistake
                     Toast.makeText(
                         this@LoginActivity,
