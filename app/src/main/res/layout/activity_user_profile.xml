@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.UserProfileActivity">
+
+
+        <View
+            android:id="@+id/topView"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/topText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="164dp"
+            android:layout_marginTop="48dp"
+            android:text="Profilo"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="117dp"
+            android:layout_height="170dp"
+
+            android:layout_marginBottom="16dp"
+            android:clipToPadding="true"
+            app:cardCornerRadius="30dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <ImageView
+                android:id="@+id/imageUser"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:background="@color/colorPrimaryLight"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_user_background" />
+
+            <View
+                android:layout_width="117dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_radius" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="285dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputFirstName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:hint="Nome di battesimo"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline2">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/FirstName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputLastName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:hint="Cognome"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputFirstName">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/LastName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/inputPhoneNumber"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:hint="Phone number "
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputLastName"
+            app:startIconDrawable="@drawable/ic_phone">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/PhoneNumber"
+                android:inputType="phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <RadioGroup
+            android:id="@+id/radioGroupGender"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/buttonSubmit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/inputPhoneNumber">
+
+            <com.firebaseauth.core.RadioButton
+                android:id="@+id/radioButtonMale"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/gender_tab_selector"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="Male"
+                android:textColor="@drawable/gender_tab_text_color"
+                android:textStyle="bold" />
+
+            <com.firebaseauth.core.RadioButton
+                android:id="@+id/radioButtonFemale"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/gender_tab_selector"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="Female"
+                android:textColor="@drawable/gender_tab_text_color"
+                android:textStyle="bold" />
+        </RadioGroup>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="44dp"
+            android:text="Save"
+            app:backgroundTint="@color/colorPrimary"
+            app:cornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroupGender" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
