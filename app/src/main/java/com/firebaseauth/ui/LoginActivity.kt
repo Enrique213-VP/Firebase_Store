@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.firebaseauth.MainActivity
 import com.firebaseauth.R
 import com.firebaseauth.core.BaseActivity
+import com.firebaseauth.core.Constants
 import com.firebaseauth.databinding.ActivityLoginBinding
 import com.firebaseauth.firestore.FireStoreClass
 import com.firebaseauth.models.User
@@ -46,6 +47,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         if(user.profileCompleted == 0) {
             //If the user profile is incomplete
             val intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
+            intent.putExtra(Constants.ExtraUserDetails, user)
             startActivity(intent)
         } else {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
