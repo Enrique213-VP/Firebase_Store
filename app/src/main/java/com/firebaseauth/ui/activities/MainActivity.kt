@@ -1,4 +1,4 @@
-package com.firebaseauth
+package com.firebaseauth.ui.activities
 
 import android.content.Context
 import android.content.Intent
@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.firebaseauth.core.Constants
 import com.firebaseauth.databinding.ActivityMainBinding
-import com.firebaseauth.ui.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {

@@ -1,9 +1,8 @@
-package com.firebaseauth.ui
+package com.firebaseauth.ui.activities
 
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.graphics.Color.RED
 import android.net.Uri
 import android.os.Bundle
@@ -13,12 +12,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
 import com.firebaseauth.R
 import com.firebaseauth.core.BaseActivity
 import com.firebaseauth.core.Constants
 import com.firebaseauth.databinding.ActivityUserProfileBinding
+import com.firebaseauth.firestore.FireStoreClass
 import com.firebaseauth.models.User
+import com.firebaseauth.core.GlideLoader
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import java.io.IOException
@@ -28,6 +28,9 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityUserProfileBinding
 
     private lateinit var mUserProfileDetail: User
+
+    private var mSelectedImageFileUri: Uri? = null
+    private var mUserProfileImageURL: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,13 +69,6 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                             android.Manifest.permission.READ_EXTERNAL_STORAGE
                         ) == PackageManager.PERMISSION_GRANTED
                     ) {
-                        /*
-                        Snackbar.make(
-                            binding.imageUser,
-                            "You already have the storage permission",
-                            BaseTransientBottomBar.LENGTH_LONG
-                        ).show()
-                        */
                         Constants.showImageChoose(this)
                     } else {
 
@@ -88,17 +84,60 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                 R.id.buttonSubmit -> {
 
                     if (validateUserProfileDetail()) {
-                        Snackbar.make(
-                            binding.imageUser,
-                            "Your details are valid, you can update them",
-                            BaseTransientBottomBar.LENGTH_LONG
+
+                        showProgressDialog(resources.getString(R.string.please_wait))
+
+                        if(mSelectedImageFileUri != null)
+                        FireStoreClass().uploadImageToCloudStorage(
+                            this@UserProfileActivity,
+                            mSelectedImageFileUri
                         )
-                            .setBackgroundTint(Color.rgb(0,128,0))
-                            .show()
+                        else {
+                            updateUserProfileDetail()
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun updateUserProfileDetail() {
+        val userHashMap = HashMap<String, Any>()
+        val mobileNumber = binding.PhoneNumber.text.toString().trim{ it <= ' '}
+        val gender = if (binding.radioButtonMale.isChecked){
+            Constants.Male
+        } else {
+            Constants.Female
+        }
+
+        if (mUserProfileImageURL.isNotEmpty()) {
+            userHashMap[Constants.Image] = mUserProfileImageURL
+        }
+
+        if (mobileNumber.isNotEmpty()) {
+            userHashMap[Constants.Mobile] = mobileNumber.toLong()
+        }
+
+        userHashMap[Constants.Gender] = gender
+
+        userHashMap[Constants.CompleteProfile] = 1
+
+        //showProgressDialog(resources.getString(R.string.please_wait))
+
+        FireStoreClass().updateUserProfileData(this, userHashMap)
+
+    }
+
+    fun userProfileUpdateSuccess() {
+        hideProgressDialog()
+        Toast.makeText(
+            this@UserProfileActivity,
+            "Your profile is updated successfully",
+            Toast.LENGTH_LONG
+        ).show()
+
+        startActivity(Intent(this@UserProfileActivity, MainActivity::class.java))
+        finish()
     }
 
     override fun onRequestPermissionsResult(
@@ -140,10 +179,13 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                 if (data != null) {
                     try {
                         //The uri of selected image from phone storage
-                        val selectedImageFileUri = data.data!!
+                        mSelectedImageFileUri = data.data!!
 
                         //binding.imageUser.setImageURI(Uri.parse(selectedImageFileUri.toString()))
-                        GlideLoader(this).loadUserPicture(selectedImageFileUri, binding.imageUser)
+                        GlideLoader(this).loadUserPicture(
+                            mSelectedImageFileUri!!,
+                            binding.imageUser
+                        )
                     } catch (e: IOException) {
                         e.printStackTrace()
                         Toast.makeText(
@@ -154,7 +196,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
             }
-        } else if (resultCode == Activity.RESULT_CANCELED){
+        } else if (resultCode == Activity.RESULT_CANCELED) {
             // A log is printed when user close or cancel the image selection
             Log.e("CancelImage", "Cancelled")
         }
@@ -162,7 +204,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
     private fun validateUserProfileDetail(): Boolean {
         return when {
-            TextUtils.isEmpty(binding.PhoneNumber.text.toString().trim{ it <= ' '}) -> {
+            TextUtils.isEmpty(binding.PhoneNumber.text.toString().trim { it <= ' ' }) -> {
                 Snackbar.make(
                     binding.imageUser,
                     "Please enter mobile number",
@@ -171,9 +213,17 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                     .setBackgroundTint(RED)
                     .show()
                 false
-            } else -> {
+            }
+            else -> {
                 true
             }
         }
+    }
+
+    fun imageUploadSuccess(imageURL: String) {
+        hideProgressDialog()
+
+        mUserProfileImageURL = imageURL
+        updateUserProfileDetail()
     }
 }

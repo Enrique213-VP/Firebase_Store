@@ -1,6 +1,5 @@
-package com.firebaseauth.ui
+package com.firebaseauth.ui.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.firebaseauth.R

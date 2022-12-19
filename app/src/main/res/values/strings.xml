@@ -3,4 +3,8 @@
     <string name="title_page_login">Benvenuto, iniziamo questo progetto!</string>
     <string name="ho_letto_e_accettato_i_termini_e_le_condizioni">Ho letto e accettato i <b><u>termini e le condizioni</u></b></string>
     <string name="please_wait">Please Wait&#8230;</string>
+    <string name="please_click_back_again_to_exit">Please click back again to exit</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

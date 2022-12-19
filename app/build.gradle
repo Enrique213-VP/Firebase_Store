@@ -37,7 +37,13 @@ android {
         enabled = true
     }
     namespace 'com.firebaseauth'
+    buildFeatures {
+        viewBinding true
+    }
 
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -53,6 +59,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.5'
+    implementation 'com.google.firebase:firebase-storage-ktx'
+
+    //Navigation Component
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
 
     //Test
     testImplementation 'junit:junit:4.13.2'

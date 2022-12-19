@@ -1,4 +1,4 @@
-package com.firebaseauth.ui
+package com.firebaseauth.core
 
 import android.content.Context
 import android.net.Uri

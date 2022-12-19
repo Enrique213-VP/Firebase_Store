@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:foregroundGravity="center"
         android:foregroundTintMode="src_in"
-        tools:context=".ui.LoginActivity">
+        tools:context=".ui.activities.LoginActivity">
 
 
         <View

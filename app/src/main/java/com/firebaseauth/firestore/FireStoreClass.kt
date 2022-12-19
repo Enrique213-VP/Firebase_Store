@@ -3,14 +3,18 @@ package com.firebaseauth.firestore
 import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import android.util.Log
 import com.firebaseauth.core.Constants
 import com.firebaseauth.models.User
-import com.firebaseauth.ui.LoginActivity
-import com.firebaseauth.ui.RegisterActivity
+import com.firebaseauth.ui.activities.LoginActivity
+import com.firebaseauth.ui.activities.RegisterActivity
+import com.firebaseauth.ui.activities.UserProfileActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 class FireStoreClass {
 
@@ -23,19 +27,15 @@ class FireStoreClass {
             // Document ID for users fields.
             .document(userInfo.id)
             // Here the userInfo are field and the SetOption is set to merge.
-            .set(userInfo, SetOptions.merge())
-            .addOnSuccessListener {
+            .set(userInfo, SetOptions.merge()).addOnSuccessListener {
 
                 // Here Call a function of base activity for transferring the result to it
                 activity.userRegistrationSuccess()
 
-            }
-            .addOnFailureListener { e ->
+            }.addOnFailureListener { e ->
                 activity.hideProgressDialog()
                 Log.e(
-                    activity.javaClass.simpleName,
-                    "Error while registering the user.",
-                    e
+                    activity.javaClass.simpleName, "Error while registering the user.", e
                 )
 
             }
@@ -48,7 +48,7 @@ class FireStoreClass {
 
         // A variable to assign the currentUserId if it is not null or else it will be blank.
         var currentUserID = ""
-        if(currentUser != null) {
+        if (currentUser != null) {
             currentUserID = currentUser.uid
         }
 
@@ -59,10 +59,8 @@ class FireStoreClass {
 
         // Here we pass the collection name from which we wants the data.
         mFireStore.collection(Constants.USERS)
-        // The document id to get the fields of user.
-            .document(getCurrentUserID())
-            .get()
-            .addOnSuccessListener { document ->
+            // The document id to get the fields of user.
+            .document(getCurrentUserID()).get().addOnSuccessListener { document ->
 
                 Log.i(activity.javaClass.simpleName, document.toString())
 
@@ -70,26 +68,21 @@ class FireStoreClass {
                 // the user data model object
                 val user = document.toObject(User::class.java)!!
 
-                val sharedPreferences =
-                    activity.getSharedPreferences(
-                        Constants.My_Shopp_Preferences,
-                        Context.MODE_PRIVATE
-                    )
+                val sharedPreferences = activity.getSharedPreferences(
+                    Constants.My_Shopp_Preferences, Context.MODE_PRIVATE
+                )
 
                 val editor: SharedPreferences.Editor = sharedPreferences.edit()
                 // Key: Value = LoggedInUsername : Sergio Vargas
                 editor.putString(
-                    Constants.LoggedInUsername,
-                    "${user.firstname} ${user.lastname}"
+                    Constants.LoggedInUsername, "${user.firstname} ${user.lastname}"
                 )
 
                 // Key for email: Email user ( For the moment)
                 editor.putString(
-                    Constants.LoggedInUsernameT,
-                    "${user.email}"
+                    Constants.LoggedInUsernameT, "${user.email}"
                 )
                 editor.apply()
-
 
 
                 //Start
@@ -101,22 +94,72 @@ class FireStoreClass {
 
                     }
                 }
-            }
-            .addOnFailureListener { e ->
+            }.addOnFailureListener { e ->
 
                 // Hide the progress dialog if there is any error and print the error in log.
-                when(activity) {
+                when (activity) {
                     is LoginActivity -> {
                         activity.hideProgressDialog()
                     }
                 }
 
                 Log.e(
-                    activity.javaClass.simpleName,
-                    "Error while getting user details",
-                    e
+                    activity.javaClass.simpleName, "Error while getting user details", e
                 )
 
             }
     }
+
+    fun updateUserProfileData(activity: Activity, userHashMap: HashMap<String, Any>) {
+        mFireStore.collection(Constants.USERS).document(getCurrentUserID()).update(userHashMap)
+            .addOnSuccessListener {
+                when (activity) {
+                    is UserProfileActivity -> {
+                        // Hide the progress dialog if there is any error.
+                        activity.userProfileUpdateSuccess()
+                    }
+                }
+            }.addOnFailureListener {
+                when (activity) {
+                    is UserProfileActivity -> {
+                        // Hide the progress dialog if there is any error.
+                        activity.hideProgressDialog()
+                    }
+                }
+            }
+    }
+
+    fun uploadImageToCloudStorage(activity: Activity, imageFileUri: Uri?) {
+        val sRef: StorageReference = FirebaseStorage.getInstance().reference.child(
+            Constants.UserProfileImage + System.currentTimeMillis() + "." + Constants.getFileExtension(
+                activity, imageFileUri
+            )
+        )
+
+        sRef.putFile(imageFileUri!!).addOnSuccessListener { taskSnapshot ->
+
+            //Get the downloadable url from the task snapshot
+            taskSnapshot.metadata!!.reference!!.downloadUrl
+                .addOnSuccessListener { uri ->
+
+                    when (activity) {
+                        is UserProfileActivity -> {
+                            // Hide the progress dialog if there is any error.
+                            activity.imageUploadSuccess(uri.toString())
+                        }
+                    }
+                }
+        }
+            .addOnFailureListener {
+                when (activity) {
+                    is UserProfileActivity -> {
+                        // Hide the progress dialog if there is any error.
+                        activity.hideProgressDialog()
+                    }
+                }
+
+            }
+
+    }
+
 }

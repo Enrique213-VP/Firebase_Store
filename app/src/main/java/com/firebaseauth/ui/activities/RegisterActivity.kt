@@ -1,12 +1,8 @@
-package com.firebaseauth.ui
+package com.firebaseauth.ui.activities
 
-import android.app.Dialog
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
-import com.firebaseauth.MainActivity
 import com.firebaseauth.R
 import com.firebaseauth.core.BaseActivity
 import com.firebaseauth.databinding.ActivityRegisterBinding
