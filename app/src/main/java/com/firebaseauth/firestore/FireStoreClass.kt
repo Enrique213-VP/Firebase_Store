@@ -9,6 +9,7 @@ import com.firebaseauth.core.Constants
 import com.firebaseauth.models.User
 import com.firebaseauth.ui.activities.LoginActivity
 import com.firebaseauth.ui.activities.RegisterActivity
+import com.firebaseauth.ui.activities.SettingsActivity
 import com.firebaseauth.ui.activities.UserProfileActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -77,11 +78,6 @@ class FireStoreClass {
                 editor.putString(
                     Constants.LoggedInUsername, "${user.firstname} ${user.lastname}"
                 )
-
-                // Key for email: Email user ( For the moment)
-                editor.putString(
-                    Constants.LoggedInUsernameT, "${user.email}"
-                )
                 editor.apply()
 
 
@@ -93,12 +89,19 @@ class FireStoreClass {
                         activity.userLoggedInSuccess(user)
 
                     }
+                    is SettingsActivity -> {
+                        activity.userDetailsSuccess(user)
+                    }
                 }
             }.addOnFailureListener { e ->
 
                 // Hide the progress dialog if there is any error and print the error in log.
                 when (activity) {
                     is LoginActivity -> {
+                        activity.hideProgressDialog()
+                    }
+
+                    is SettingsActivity -> {
                         activity.hideProgressDialog()
                     }
                 }
