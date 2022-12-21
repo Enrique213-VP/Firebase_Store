@@ -43,14 +43,33 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             mUserProfileDetail = intent.getParcelableExtra(Constants.ExtraUserDetails)!!
         }
 
-        binding.FirstName.isEnabled = false
         binding.FirstName.setText(mUserProfileDetail.firstname)
-
-        binding.LastName.isEnabled = false
         binding.LastName.setText(mUserProfileDetail.lastname)
 
+        // Email denied permission for modification
         binding.Email.isEnabled = false
         binding.Email.setText(mUserProfileDetail.email)
+
+        if (mUserProfileDetail.profileCompleted == 0) {
+            binding.topText.text = "Complete profile"
+            binding.FirstName.isEnabled = false
+            binding.LastName.isEnabled = false
+
+        } else {
+            binding.topText.text = "Edit profile"
+            GlideLoader(this@UserProfileActivity).loadUserPicture(mUserProfileDetail.image, binding.imageUser)
+
+            if (mUserProfileDetail.mobile != 0L) {
+                binding.PhoneNumber.setText(mUserProfileDetail.mobile.toString())
+            }
+            if (mUserProfileDetail.gender == Constants.Male ) {
+                binding.radioButtonMale.isChecked = true
+            } else {
+                binding.radioButtonFemale.isChecked = true
+            }
+
+            binding.arrowWhite.setOnClickListener { onBackPressed() }
+        }
 
         binding.imageUser.setOnClickListener(this@UserProfileActivity)
         binding.buttonSubmit.setOnClickListener(this@UserProfileActivity)
@@ -103,6 +122,17 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
     private fun updateUserProfileDetail() {
         val userHashMap = HashMap<String, Any>()
+
+        val firstName = binding.FirstName.text.toString().trim{ it <= ' '}
+        if (firstName != mUserProfileDetail.firstname) {
+            userHashMap[Constants.FirstName] = firstName
+        }
+
+        val lastName = binding.LastName.text.toString().trim{ it <= ' '}
+        if (lastName != mUserProfileDetail.lastname) {
+            userHashMap[Constants.LastName] = lastName
+        }
+
         val mobileNumber = binding.PhoneNumber.text.toString().trim{ it <= ' '}
         val gender = if (binding.radioButtonMale.isChecked){
             Constants.Male
@@ -114,8 +144,12 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             userHashMap[Constants.Image] = mUserProfileImageURL
         }
 
-        if (mobileNumber.isNotEmpty()) {
+        if (mobileNumber.isNotEmpty() && mobileNumber != mUserProfileDetail.mobile.toString()) {
             userHashMap[Constants.Mobile] = mobileNumber.toLong()
+        }
+
+        if (gender.isNotEmpty() && gender != mUserProfileDetail.gender) {
+            userHashMap[Constants.Gender] = gender
         }
 
         userHashMap[Constants.Gender] = gender
@@ -136,7 +170,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             Toast.LENGTH_LONG
         ).show()
 
-        startActivity(Intent(this@UserProfileActivity, MainActivity::class.java))
+        startActivity(Intent(this@UserProfileActivity, DashboardActivity::class.java))
         finish()
     }
 
@@ -149,16 +183,6 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         if (requestCode == Constants.ReadStoragePermissionCode) {
             // If permission is granted
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                /* Check the Snack bar
-                Snackbar.make(
-                    binding.imageUser,
-                    "The storage permission is granted",
-                    BaseTransientBottomBar.LENGTH_LONG
-                )
-                    .setBackgroundTint(Color.rgb(0,128,0))
-                    .show()
-                */
-
                 Constants.showImageChoose(this)
             } else {
                 Snackbar.make(

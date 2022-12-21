@@ -18,6 +18,8 @@ object Constants {
 
     const val Male = "male"
     const val Female = "female"
+    const val FirstName = "firstname"
+    const val LastName = "lastname"
 
     const val Mobile = "mobile"
     const val Gender = "gender"

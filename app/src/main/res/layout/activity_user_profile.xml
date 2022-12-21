@@ -20,6 +20,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/arrowWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_arrow_back" />
+
         <TextView
             android:id="@+id/topText"
             android:layout_width="0dp"
@@ -52,7 +62,8 @@
                 android:layout_margin="8dp"
                 android:background="@color/colorPrimaryLight"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_user_background" />
+                android:src="@drawable/ic_user_background"
+                tools:src="@drawable/ic_phone"/>
 
             <View
                 android:layout_width="117dp"
