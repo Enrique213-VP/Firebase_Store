@@ -10,6 +10,7 @@ import com.firebaseauth.databinding.ActivityRegisterBinding
 import com.firebaseauth.firestore.FireStoreClass
 import com.firebaseauth.models.User
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -22,6 +23,8 @@ class RegisterActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        FirebaseApp.initializeApp(this)
 
         binding.loginLink.setOnClickListener {
             onBackPressed()
@@ -166,5 +169,9 @@ class RegisterActivity : BaseActivity() {
             "You are registered successfully",
             Toast.LENGTH_LONG
         ).show()
+
+        val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

@@ -11,6 +11,7 @@ import com.firebaseauth.core.Constants
 import com.firebaseauth.databinding.ActivityLoginBinding
 import com.firebaseauth.firestore.FireStoreClass
 import com.firebaseauth.models.User
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
@@ -20,6 +21,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (FirebaseApp.getApps(this).isEmpty()) {
+            FirebaseApp.initializeApp(this)
+        }
 
         binding.register.setOnClickListener(this)
         binding.buttonLogin.setOnClickListener(this)

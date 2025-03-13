@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.firebaseauth.R
 
+@Suppress("DEPRECATION")
 open class BaseActivity: AppCompatActivity() {
 
     private lateinit var mProgressDialog: Dialog

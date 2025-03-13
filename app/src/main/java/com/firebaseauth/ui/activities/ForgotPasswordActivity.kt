@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.firebaseauth.core.BaseActivity
 import com.firebaseauth.databinding.ActivityForgotPasswordBinding
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 
 class ForgotPasswordActivity : BaseActivity() {
@@ -12,6 +13,8 @@ class ForgotPasswordActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        FirebaseApp.initializeApp(this)
 
         binding.buttonForgot.setOnClickListener {
             forgotPassWord()

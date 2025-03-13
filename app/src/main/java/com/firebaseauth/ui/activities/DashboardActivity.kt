@@ -33,6 +33,7 @@ class DashboardActivity : BaseActivity() {
         navView.setupWithNavController(navController)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         doubleBackToExit()
     }
