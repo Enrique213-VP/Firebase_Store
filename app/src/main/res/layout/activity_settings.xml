@@ -13,12 +13,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        
+
         <FrameLayout
             android:id="@+id/frameLayoutHeader"
             android:layout_width="match_parent"
             android:layout_height="200dp" >
-            
+
             <ImageView
                 android:id="@+id/imageViewHeaderBg"
                 android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                     android:textStyle="bold" />
             </androidx.appcompat.widget.Toolbar>
         </FrameLayout>
-        
+
         <FrameLayout
             android:id="@+id/frameLayoutUserImage"
             android:layout_width="150dp"
@@ -140,7 +140,8 @@
             android:background="@drawable/item_border_background"
             android:foreground="?attr/selectableItemBackground"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:visibility="gone">
 
 
             <TextView

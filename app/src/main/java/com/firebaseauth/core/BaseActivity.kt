@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.firebaseauth.R
-import java.util.logging.Handler
 
 open class BaseActivity: AppCompatActivity() {
 
@@ -12,16 +11,14 @@ open class BaseActivity: AppCompatActivity() {
 
     private var doubleBackToExitPressedOnce = false
 
-    fun showProgressDialog(text: String) {
+    fun showProgressDialog() {
         mProgressDialog = Dialog(this)
-        /* Set the screen content from a layout resource.
-        The resource will be inflated, adding all top-level views to the screen */
         mProgressDialog.setContentView(R.layout.dialog_progress)
 
         mProgressDialog.setCancelable(false)
         mProgressDialog.setCanceledOnTouchOutside(false)
 
-        //Start the dialog and display it on screen
+
         mProgressDialog.show()
     }
 

@@ -12,10 +12,9 @@ class GlideLoader(val context: Context) {
 
     fun loadUserPicture(image: Any, imageView: ImageView) {
         try{
-            // Load the user image in the ImageView
             Glide
                 .with(context)
-                .load(image) // URI of the image
+                .load(image)
                 .centerCrop()
                 .placeholder(R.drawable.ic_user_background) // A default place holder if image is failed to load
                 .into(imageView) // The view in which the image will be loaded.

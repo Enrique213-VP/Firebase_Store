@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         tools:context=".ui.activities.RegisterActivity">
 
-
         <View
             android:id="@+id/topView"
             android:layout_width="0dp"
@@ -68,7 +67,7 @@
             app:layout_constraintTop_toBottomOf="@+id/view2">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/FirstName"
+                android:id="@+id/firstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -88,19 +87,18 @@
             app:layout_constraintTop_toBottomOf="@+id/inputFirstName">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/LastName"
+                android:id="@+id/lastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputRegisterEmail"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
             android:hint="E-mail"
             android:inputType="textPersonName"
@@ -155,7 +153,7 @@
             app:startIconDrawable="@drawable/ic_lock">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ConfirmPassword"
+                android:id="@+id/confirmPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
@@ -163,9 +161,11 @@
 
         <LinearLayout
             android:id="@+id/linear_layout_term_cond"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
@@ -173,27 +173,35 @@
             app:layout_constraintTop_toBottomOf="@id/inputConfirmPassword">
 
             <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/term_cond"
-                android:layout_width="48dp"
+                android:id="@+id/termsCheckbox"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:checked="false" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ho_letto_e_accettato_i_termini_e_le_condizioni"
+                android:textColor="@color/colorPrimary"
+                android:layout_margin="4dp"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_term_cond"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/ho_letto_e_accettato_i_termini_e_le_condizioni"
+                android:text="@string/terms"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonRegister"
-            android:layout_width="match_parent"
+            android:id="@+id/registerButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="44dp"
+            android:layout_marginEnd="32dp"
             android:text="Register"
             app:backgroundTint="@color/colorPrimary"
             app:cornerRadius="20dp"
@@ -202,32 +210,32 @@
             app:layout_constraintTop_toBottomOf="@+id/linear_layout_term_cond" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/login_section"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginEnd="44dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonRegister">
+            app:layout_constraintTop_toBottomOf="@+id/registerButton">
 
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="32dp"
                 android:text="Hai già un account?"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="16sp" />
 
-            <!--Agregar linea para registro-->
             <TextView
-                android:id="@+id/register"
+                android:id="@+id/loginLink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginStart="10dp"
                 android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:foregroundTintMode="src_in"
                 android:text="accedi qui"
@@ -237,5 +245,4 @@
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </ScrollView>

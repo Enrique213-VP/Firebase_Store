@@ -21,21 +21,16 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Click event assigned to register button.
         binding.register.setOnClickListener(this)
-        // Click event assigned to login button.
         binding.buttonLogin.setOnClickListener(this)
-        // Click event assigned to forgot password button.
         binding.tvForgotPassword.setOnClickListener(this)
     }
 
     fun userLoggedInSuccess(user: User) {
 
-        // Hide the progress dialog.
         hideProgressDialog()
 
         if(user.profileCompleted == 0) {
-            //If the user profile is incomplete
             val intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
             intent.putExtra(Constants.ExtraUserDetails, user)
             startActivity(intent)
@@ -45,8 +40,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         finish()
     }
 
-    // In login screen the clickable components are login button, forgot password text and register text
-    override fun onClick(view: View?) {
+     override fun onClick(view: View?) {
         if (view != null) {
             when (view.id) {
                 R.id.register -> {
@@ -65,7 +59,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private fun validateUser() {
         when {
 
-            //Lambda for write the email
             TextUtils.isEmpty(binding.inputEmail.text.toString().trim() { it <= ' ' }) -> {
                 Toast.makeText(
                     this@LoginActivity,
@@ -92,8 +85,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private fun loginUser() {
 
-        //See the progressBar
-        showProgressDialog(resources.getString(R.string.please_wait))
+        showProgressDialog()
 
         val email: String = binding.inputEmail.text.toString().trim() { it <= ' ' }
         val password: String = binding.inputPassword.text.toString().trim() { it <= ' ' }

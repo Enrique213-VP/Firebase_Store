@@ -18,7 +18,7 @@
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
@@ -45,16 +45,16 @@
         <activity
             android:name=".ui.activities.ForgotPasswordActivity"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+            android:theme="@style/Theme.FirebaseAuth.light" />
         <activity
             android:name=".ui.activities.RegisterActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+            android:theme="@style/Theme.FirebaseAuth.light" />
         <activity
             android:name=".ui.activities.LoginActivity"
             android:exported="true"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+            android:theme="@style/Theme.FirebaseAuth.light">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

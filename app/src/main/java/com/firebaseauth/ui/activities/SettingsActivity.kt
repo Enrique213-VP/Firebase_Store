@@ -39,7 +39,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun getUserDetails() {
-        showProgressDialog(resources.getString(R.string.please_wait))
+        showProgressDialog()
         FireStoreClass().getUserDetails(this)
     }
 

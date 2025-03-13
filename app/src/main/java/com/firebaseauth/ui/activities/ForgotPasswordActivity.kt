@@ -2,7 +2,6 @@ package com.firebaseauth.ui.activities
 
 import android.os.Bundle
 import android.widget.Toast
-import com.firebaseauth.R
 import com.firebaseauth.core.BaseActivity
 import com.firebaseauth.databinding.ActivityForgotPasswordBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -17,12 +16,15 @@ class ForgotPasswordActivity : BaseActivity() {
         binding.buttonForgot.setOnClickListener {
             forgotPassWord()
         }
+
+        binding.backToLoginText.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     private fun forgotPassWord() {
 
-        //See the progressBar
-        showProgressDialog(resources.getString(R.string.please_wait))
+        showProgressDialog()
 
         val email: String = binding.sendEmail.text.toString().trim() { it <= ' ' }
 
@@ -36,7 +38,6 @@ class ForgotPasswordActivity : BaseActivity() {
             FirebaseAuth.getInstance().sendPasswordResetEmail(email)
                 .addOnCompleteListener { task ->
 
-                    //hide the progressBar
                     hideProgressDialog()
 
                     if (task.isSuccessful) {
@@ -47,7 +48,6 @@ class ForgotPasswordActivity : BaseActivity() {
                         ).show()
                         finish()
                     } else {
-                        //If the reset is generated a mistake
                         Toast.makeText(
                             this@ForgotPasswordActivity,
                             task.exception!!.message.toString(),

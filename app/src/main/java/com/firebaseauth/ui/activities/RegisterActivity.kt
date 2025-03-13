@@ -1,9 +1,10 @@
 package com.firebaseauth.ui.activities
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
-import com.firebaseauth.R
 import com.firebaseauth.core.BaseActivity
 import com.firebaseauth.databinding.ActivityRegisterBinding
 import com.firebaseauth.firestore.FireStoreClass
@@ -22,20 +23,29 @@ class RegisterActivity : BaseActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.register.setOnClickListener {
+        binding.loginLink.setOnClickListener {
             onBackPressed()
         }
 
-        //Action for input the user register
-        binding.buttonRegister.setOnClickListener {
+
+        binding.registerButton.setOnClickListener {
             validateRegister()
+        }
+
+        binding.tvTermCond.setOnClickListener {
+            val url = "https://github.com/Enrique213-VP/MrOlympiaCompose/blob/main/License"
+
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(url)
+
+            startActivity(intent)
         }
     }
 
     private fun validateRegister() {
         when {
             //Lambda for write the first name
-            TextUtils.isEmpty(binding.FirstName.text.toString().trim() { it <= ' ' }) -> {
+            TextUtils.isEmpty(binding.firstName.text.toString().trim() { it <= ' ' }) -> {
                 Toast.makeText(
                     this@RegisterActivity,
                     "Please enter your first name",
@@ -44,8 +54,8 @@ class RegisterActivity : BaseActivity() {
             }
             //Lambda for write the last name
             TextUtils.isEmpty(
-                binding.LastName.text.toString()
-                    .trim() { it <= ' ' }) || binding.LastName.length() <= 1 -> {
+                binding.lastName.text.toString()
+                    .trim() { it <= ' ' }) || binding.lastName.length() <= 1 -> {
                 Toast.makeText(
                     this@RegisterActivity,
                     "Please enter your last name",
@@ -71,7 +81,7 @@ class RegisterActivity : BaseActivity() {
             }
 
             TextUtils.isEmpty(
-                binding.ConfirmPassword.text.toString().trim() { it <= ' ' }) -> {
+                binding.confirmPassword.text.toString().trim() { it <= ' ' }) -> {
                 Toast.makeText(
                     this@RegisterActivity,
                     "Please confirm password",
@@ -79,7 +89,7 @@ class RegisterActivity : BaseActivity() {
                 ).show()
             }
 
-            binding.ConfirmPassword.text.toString()
+            binding.confirmPassword.text.toString()
                 .trim() { it <= ' ' } != binding.registerPassword.text.toString()
                 .trim() { it <= ' ' } -> {
                 Toast.makeText(
@@ -89,7 +99,7 @@ class RegisterActivity : BaseActivity() {
                 ).show()
             }
 
-            !binding.termCond.isChecked -> {
+            !binding.termsCheckbox.isChecked -> {
                 Toast.makeText(
                     this@RegisterActivity,
                     "You must accept terms and conditions",
@@ -105,7 +115,7 @@ class RegisterActivity : BaseActivity() {
 
     private fun registerUser() {
 
-        showProgressDialog(resources.getString(R.string.please_wait))
+        showProgressDialog()
 
         val email: String = binding.registerEmail.text.toString().trim() { it <= ' ' }
         val password: String =
@@ -124,8 +134,8 @@ class RegisterActivity : BaseActivity() {
 
                         val user = User(
                             firebaseUser.uid,
-                            binding.FirstName.text.toString().trim { it <= ' ' },
-                            binding.LastName.text.toString().trim { it <= ' ' },
+                            binding.firstName.text.toString().trim { it <= ' ' },
+                            binding.lastName.text.toString().trim { it <= ' ' },
                             binding.registerEmail.text.toString().trim { it <= ' ' }
                         )
 
