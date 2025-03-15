@@ -5,7 +5,7 @@ Bienvenido a este proyecto de autenticación en Android utilizando Firebase. Imp
 ✅ Inicio de sesión 🔑  
 ✅ Registro de usuarios 📝  
 ✅ Recuperación de contraseña 📧  
-✅ Registro de usuarios 🧑‍💻
+✅ Edición de usuarios 🧑‍💻
 
 ---
 
